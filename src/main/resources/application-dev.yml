@@ -1,0 +1,76 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: 
+    username: 
+    password: 
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: 
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  redis:
+    host: 
+    port: 
+    password: 
+    database: 
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: 1
+        max-idle: 8
+        min-idle: 0
+    timeout: 1000
+  cloud:
+    zookeeper:
+      connect-string: 
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/h5**]':
+            allowedOrigins: '*'
+            allowedMethods:
+            - GET
+            - POST
+      discovery:
+        locator:
+          enabled: false
+      routes:
+      - id: test
+        uri: lb://test
+        order: 1
+        predicates:
+        - Path=/test/api/**
+        filters:
+        - TokenFilter
+        - StripPrefix=1
+    
+logging:
+  file: /logs/gateway.log
+  level:
+    org.springframework.cloud.gateway: debug
+    org.springframework.http.server.reactive: debug
+    org.springframework.web.reactive: debug
+    reactor.ipc.netty: info
+    org.springframework.data.redis: debug
+    io.lettuce: info
+    com.hx.vr: debug
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 5000
+  threadpool:
+    default:
+      coreSize: 16
+      maxQueueSize: 512
+      queueSizeRejectionThreshold: 300

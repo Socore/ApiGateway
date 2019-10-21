@@ -1,0 +1,25 @@
+server:
+  port: 8050
+spring:
+  application:
+    name: api-gateway
+  profiles: 
+    active: dev
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000  
+ribbon:
+  ReadTimeout: 50000
+  ConnectTimeout: 50000
+  MaxAutoRetries: 3
+  MaxAutoRetriesNextServer: 1       
+feign:
+  hystrix:
+    enabled: true
+endpoints:
+  restart:
+    enabled: true

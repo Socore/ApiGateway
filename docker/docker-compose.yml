@@ -1,0 +1,17 @@
+version: '3'
+services:
+  hjh-api-gateway:
+    image: ${docker-registry}/api-gateway:${project.version}-${env}
+    ports:
+    - 8050:8050
+    expose:
+    - '8050'
+    volumes:
+      - "/opt/server/logs:/logs"
+    networks:
+      - hxnet
+    restart: always
+networks:
+  hxnet:
+    external:
+      name: ${docker-network}
